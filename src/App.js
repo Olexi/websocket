@@ -9,7 +9,8 @@ class App extends React.Component {
 
     this.state = {
         ws: null,
-        messageLog: ''
+        messageLog: '',
+        enterEnabled: false,
     };
   }
 
@@ -20,7 +21,7 @@ class App extends React.Component {
   timeout = 250;
 
   connect = () => {
-    const ws = new w3cwebsocket('ws://172.28.2.130:3001', 'echo-protocol');
+    const ws = new w3cwebsocket('ws://172.28.2.21:3001', 'echo-protocol');
     let that = this; // cache the this
     let connectInterval;
 
@@ -77,11 +78,14 @@ class App extends React.Component {
         const userName = document.getElementById('username').value;
         const message = document.getElementById('text').value;
         document.getElementById('text').value = '';
-        console.log(message)
         this.state.ws.send(`${userName}: ${message}\r\n`) //send data to the server
     } catch (error) {
         console.log(error) // catch error
     }
+  }
+
+  toggleEnter = (value) => {
+    this.setState({enterEnabled: value})
   }
 
   render() {
@@ -93,7 +97,11 @@ class App extends React.Component {
             Username: <input id='username'></input>
           </div>
           <div className='input'>
-            Message: <input id='text'></input>
+            Message: <input id='text'
+             onFocus={() => this.toggleEnter(true)} 
+             onBlur={() => this.toggleEnter(false)} 
+             onKeyPress={(e) => {e.charCode === 13 && this.sendMessage()}}
+           />
           </div>
           <div className='input'>
             <button style={{height: '30px', width: '60px', backgroundColor: 'red', color: 'white'}} onClick={() => this.sendMessage()}>Send</button>

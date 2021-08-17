@@ -10,7 +10,7 @@ server.listen(3001, function() {
     console.log((new Date()) + ' Server is listening on port 3001');
 });
  
-wsServer = new WebSocketServer({
+let wsServer = new WebSocketServer({
     httpServer: server,
     // You should not use autoAcceptConnections for production
     // applications, as it defeats all standard cross-origin protection
