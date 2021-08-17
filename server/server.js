@@ -1,9 +1,17 @@
-var WebSocketServer = require('websocket').server;
-var http = require('http');
+import { server as WebSocketServer } from 'websocket';
+import http from 'http';
+
+import { login } from './login.js';
  
 var server = http.createServer(function(request, response) {
     console.log((new Date()) + ' Received request for ' + request.url);
-    response.writeHead(404);
+
+    if(request.url === '/login') {
+        login(request, response);
+    } else {
+        response.writeHead(404);
+    }
+    
     response.end();
 });
 server.listen(3001, function() {
