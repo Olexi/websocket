@@ -1,17 +1,11 @@
 import { server as WebSocketServer } from 'websocket';
 import http from 'http';
 
-import { login } from './login.js';
+import { routing } from './routes/main.js';
  
 var server = http.createServer(function(request, response) {
     console.log((new Date()) + ' Received request for ' + request.url);
-
-    if(request.url === '/login') {
-        login(request, response);
-    } else {
-        response.writeHead(404);
-    }
-    
+    routing(request, response);    
     response.end();
 });
 server.listen(3001, function() {
